@@ -18,7 +18,7 @@ function Home() {
 
     useEffect(() => {
         setLoading(true)
-        const fetchMovies = fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${APIKEY}&language=pt-BR`).then(res => res.json())
+        const fetchMovies = fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${APIKEY}&language=pt-BR`).then(res => res.json())
 
         const fetchSeries = fetch(`https://api.themoviedb.org/3/tv/popular?api_key=${APIKEY}&language=pt-BR`).then(res => res.json())
 
@@ -26,12 +26,11 @@ function Home() {
             setMovies(movieData.results || [])
             setSeries(seriesData.results || [])
             setLoading(false)
-
-                .catch((error) => {
+  
+        }).catch((error) => {
                     console.error("Erro ao buscar dados no servidor")
                     setLoading(false)
                 })
-        })
     }, [])
 
     const filtrar = (lista) => {
@@ -66,7 +65,8 @@ function Home() {
                     setGenero('')
                 }}>Limpar Filtros</button>
             </SearchBar>
-            <h2>Filmes Populares</h2>
+
+            <h2>Filmes Bem avaliados</h2>
             <MovieList>
                 {filtrar(movies).map(movie =>
                     <Movie key={movie.id}>
@@ -75,6 +75,18 @@ function Home() {
                     </Movie>
                 )}
             </MovieList>
+
+
+            <h2>Series Populares</h2>
+            <MovieList>
+                {filtrar(series).map(serie =>
+                    <Movie key={serie.id}>
+                        <img src={`${img_path}${serie.poster_path}`} alt={serie.title} />
+                        <span>{serie.title}</span>
+                    </Movie>
+                )}
+            </MovieList>
+
         </Container>
     )
 }
